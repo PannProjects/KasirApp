@@ -67,7 +67,3 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 # 💻 Tech Stack:
 
 ![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white) ![Filament](https://img.shields.io/badge/Filament-FFAA00?style=for-the-badge&logoColor=%23000000)
-
-# 📊 GitHub Stats:
-
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=PannProjects&theme=gotham&hide_border=true&include_all_commits=false&count_private=false&layout=compact)
