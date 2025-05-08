@@ -8,6 +8,9 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ItemResource\Pages;
@@ -25,16 +28,41 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')->required(),
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('stock')->required()->disabledOn('edit'),
-                Forms\Components\Select::make('unit')->options([
-                    'pcs' => 'Pcs',
-                    'kg' => 'Kg',
-                    'gr' => 'Gr',
-                    'l' => 'L',
-                    'ml' => 'Ml',
-                ]),
+                Grid::make()
+                    ->schema([
+                        TextInput::make('code')
+                            ->label('Item Code')
+                            ->required()
+                            ->unique(ignoreRecord: true),
+
+                        TextInput::make('name')
+                            ->label('Item Name')
+                            ->required(),
+
+                        TextInput::make('price')
+                            ->label('Price')
+                            ->required()
+                            ->numeric()
+                            ->prefix('Rp'),
+
+                        TextInput::make('stock')
+                            ->label('Stock')
+                            ->required()
+                            ->numeric()
+                            ->disabledOn('edit'),
+
+                        Select::make('unit')
+                            ->label('Unit')
+                            ->options([
+                                'pcs' => 'Pcs',
+                                'kg' => 'Kg',
+                                'gr' => 'Gr',
+                                'l' => 'L',
+                                'ml' => 'Ml',
+                            ])
+                            ->required(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -42,10 +70,28 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('code'),
-                TextColumn::make('name'),
-                TextColumn::make('unit'),
-                TextColumn::make('stock'),
+                TextColumn::make('code')
+                    ->label('Item Code')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('name')
+                    ->label('Item Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('price')
+                    ->label('Price')
+                    ->money('IDR')
+                    ->sortable(),
+
+                TextColumn::make('unit')
+                    ->label('Unit')
+                    ->sortable(),
+
+                TextColumn::make('stock')
+                    ->label('Stock')
+                    ->sortable(),
             ])
             ->filters([
                 //

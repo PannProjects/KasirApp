@@ -8,6 +8,10 @@ use App\Models\Supplier;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SupplierResource\Pages;
@@ -25,11 +29,32 @@ class SupplierResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required()->label('Contact Name'),
-                Forms\Components\TextInput::make('company_name')->required(),
-                Forms\Components\TextInput::make('phone')->unique(ignoreRecord: true)->type('number'),
-                Forms\Components\TextInput::make('email')->unique(ignoreRecord: true)->type('email'),
-                Forms\Components\Textarea::make('address')->required()->columnSpanFull(),
+                Grid::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Contact Name')
+                            ->required(),
+
+                        TextInput::make('company_name')
+                            ->label('Company Name')
+                            ->required(),
+
+                        TextInput::make('phone')
+                            ->label('Phone Number')
+                            ->tel()
+                            ->unique(ignoreRecord: true),
+
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->unique(ignoreRecord: true),
+
+                        Textarea::make('address')
+                            ->label('Address')
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -37,19 +62,39 @@ class SupplierResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('company_name')->searchable(),
-                TextColumn::make('phone')->searchable(),
-                TextColumn::make('email')->searchable(),
-                TextColumn::make('address')->searchable(),
+                TextColumn::make('name')
+                    ->label('Contact Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('company_name')
+                    ->label('Company Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('phone')
+                    ->label('Phone Number')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('address')
+                    ->label('Address')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

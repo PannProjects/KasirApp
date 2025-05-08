@@ -1,5 +1,12 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Events\EventServiceProvider;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
+
 return [
 
     /*
@@ -122,5 +129,21 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        EventServiceProvider::class,
+        RouteServiceProvider::class,
+        App\Providers\ThemeServiceProvider::class,
+    ])->toArray(),
 
 ];
