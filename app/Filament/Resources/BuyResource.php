@@ -5,12 +5,13 @@ namespace App\Filament\Resources;
 use App\Models\Buy;
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Supplier;
 use App\Models\Customer;
+use App\Models\Supplier;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
@@ -67,7 +68,15 @@ class BuyResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('supplier.company_name')
+                    ->label('Supplier Name'),
+
+                TextColumn::make('supplier.name')
+                    ->label('Sales Name'),
+
+                TextColumn::make('date')
+                    ->dateTime('d-F-Y', 'Asia/Jakarta')
+                    ->label('Purchase Date'),
             ])
             ->filters([
                 //

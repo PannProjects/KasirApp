@@ -8,6 +8,10 @@ use App\Models\Customer;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CustomerResource\Pages;
@@ -25,10 +29,28 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('email')->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('address')->required(),
-                Forms\Components\TextInput::make('phone')->unique(ignoreRecord: true),
+                Grid::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Customer Name')
+                            ->required(),
+
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->unique(ignoreRecord: true),
+
+                        TextInput::make('phone')
+                            ->label('Phone Number')
+                            ->tel()
+                            ->unique(ignoreRecord: true),
+
+                        Textarea::make('address')
+                            ->label('Address')
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -36,18 +58,33 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('email')->searchable(),
-                TextColumn::make('address')->searchable(),
-                TextColumn::make('phone')->searchable(),
+                TextColumn::make('name')
+                    ->label('Customer Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('phone')
+                    ->label('Phone Number')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('address')
+                    ->label('Address')
+                    ->searchable()
+                    ->sortable()
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

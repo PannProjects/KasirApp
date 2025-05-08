@@ -30,7 +30,21 @@ return [
     */
 
     'default' => [
-        'theme' => 'default',
-        'theme_color' => 'blue',
+        'theme' => 'custom',
+        'theme_color' => 'primary',
+    ],
+
+    'themes' => [
+        'custom' => [
+            'name' => 'Custom Theme',
+            'colors' => [
+                'primary' => '#636D4A',
+                'secondary' => '#A5AB85',
+                'accent' => '#A78963',
+                'brown' => '#916639',
+                'dark' => '#5A2F0D',
+            ],
+            'css' => 'hasnayeen/themes/custom.css',
+        ],
     ],
 ];
